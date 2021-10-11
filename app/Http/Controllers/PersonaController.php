@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Persona;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Auth;
 
 class PersonaController extends Controller
 {
@@ -14,7 +16,11 @@ class PersonaController extends Controller
      */
     public function index()
     {
-        $personas = Persona::all();
+        //$personas = Persona::all();
+        //$personas = Persona::where('');
+        //$personas = Auth::user()->personas->toSql();
+        $personas = Auth::user()->personas()->get();
+        //dd($personas);
         return view('personasIndex', compact('personas'));
     }
 
@@ -47,15 +53,20 @@ class PersonaController extends Controller
         ]);
         // Crear instancia del modelo
         $persona = new Persona();
-        // Asignar propiedades del modulo (columnas)
-        $persona->nombre = $request->nombre;
+        $request->merge([
+            'user_id' => Auth::id(),
+            'apellido_materno' => $request->apellido_materno,
+        ]);
+        Persona::create($request->all());
+        // Asignar propiedades del modulo (columnas
+        /*$persona->nombre = $request->nombre;
         $persona->apellido_materno = $request->apellido_materno ?? '';
         $persona->apellido_paterno = $request->apellido_paterno;
         $persona->identificador = $request->identificador;
         $persona->telefono = $request->telefono ?? '';
-        $persona->correo = $request->correo;
+        $persona->correo = $request->correo;*/
         // Guardar
-        $persona->save();
+        //$persona->save();
         // Redireccionar a Index
         return redirect()->route('index');
     }
@@ -96,19 +107,27 @@ class PersonaController extends Controller
             'nombre' => 'required|max:255',
             'apellido_paterno' => 'required|max:255',
             'apellido_materno' => 'max:255',
-            //'identificador' => 'required|max:255|unique:App\Models\Persona,identificador',
+            'identificador' => [
+                'required',
+                Rule::unique('personas')->ignore($persona->id)
+            ],
             'correo'=> 'required|email|max:255',
             'telefono' => ['max:50'],
         ]);
         // Asignar propiedades del modulo (columnas)
-        $persona->nombre = $request->nombre;
+        // $request->merge(['apellido_materno' => $request->apellido_materno]);
+        // -> Puede insertar el valor de un campo de manera automática. Cambiando un formulario que viene 
+        // o estableciendo un valor por defecto.
+        Persona::where('id', $persona->id)->update($request->except('_token', '_method'));
+        //Persona::create($request->all());
+        /*$persona->nombre = $request->nombre;
         $persona->apellido_materno = $request->apellido_materno ?? '';
         $persona->apellido_paterno = $request->apellido_paterno;
         $persona->identificador = $request->identificador;
         $persona->telefono = $request->telefono ?? '';
         $persona->correo = $request->correo;
         // Actualizar la información
-        $persona->save();
+        $persona->save();*/
         // Redireccionar a Index
         return redirect()->route('show', $persona);
     }
@@ -121,6 +140,11 @@ class PersonaController extends Controller
      */
     public function destroy(Persona $persona)
     {
-        //
+        $persona->delete();
+        return redirect()->route('index');
+    }
+
+    public function user(){
+        return $this->belongsTo(User::class);
     }
 }

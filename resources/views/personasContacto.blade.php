@@ -7,7 +7,7 @@
     <title>Formulario</title>
 </head>
 <body>
-    <h1>Formulario para {{  isset($persona) ? 'registro' : 'edición'  }} de personas.</h1>
+    <h1>Formulario para {{  isset($persona) ? 'edición' : 'registro' }} de personas.</h1>
     @if ($errors->any())
         <div class="alert alert-danger">
             <ul>

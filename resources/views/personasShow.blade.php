@@ -16,6 +16,14 @@
         <li>{{ $persona->telefono }}</li>
     </ul>
     <hr>
+    Usuario creador: {{ $persona->user->name }}
+    <hr>
     <a href="{{route('edit', $persona->id)}}">Editar</a>
+    <hr>
+    <form action="{{ route('destroy', $persona) }}" method="post">
+        @method('DELETE')
+        @csrf
+        <input type="submit" value="Eliminar">
+    </form>
 </body>
 </html>
