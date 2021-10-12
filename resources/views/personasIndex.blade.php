@@ -8,7 +8,7 @@
 </head>
 <body>
     <h1>Listado de personas.</h1>
-    <a href="{{ route('create') }}">Agregar persona.</a>
+    <a href="{{ route('personas.create') }}">Agregar persona.</a>
     <table border="1">
         <thead>
             <tr>
@@ -24,7 +24,7 @@
         <tbody>
             @foreach ($personas as $persona)
                 <tr>
-                    <td><a href="{{ route('show', $persona->id) }}">
+                    <td><a href="{{ route('personas.show', $persona->id) }}">
                             {{ $persona->id }}
                         </a>
                     </td>

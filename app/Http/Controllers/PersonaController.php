@@ -20,6 +20,7 @@ class PersonaController extends Controller
         //$personas = Persona::where('');
         //$personas = Auth::user()->personas->toSql();
         $personas = Auth::user()->personas()->get();
+        //$personas = Auth::user()->personas;
         //dd($personas);
         return view('personasIndex', compact('personas'));
     }
