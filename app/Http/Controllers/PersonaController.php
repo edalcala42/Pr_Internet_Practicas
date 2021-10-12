@@ -9,6 +9,10 @@ use Illuminate\Support\Facades\Auth;
 
 class PersonaController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth')->except('index', 'show');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -16,10 +20,10 @@ class PersonaController extends Controller
      */
     public function index()
     {
-        //$personas = Persona::all();
+        $personas = Persona::all();
         //$personas = Persona::where('');
         //$personas = Auth::user()->personas->toSql();
-        $personas = Auth::user()->personas()->get();
+        //$personas = Auth::user()->personas()->get();
         //$personas = Auth::user()->personas;
         //dd($personas);
         return view('personasIndex', compact('personas'));

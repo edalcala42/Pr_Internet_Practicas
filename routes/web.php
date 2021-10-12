@@ -37,7 +37,7 @@ Route::get('/personas/{persona}/edit', 'App\Http\Controllers\PersonaController@e
 */
 
 //Route::get('/personas', [PersonaController::class, 'index']);
-Route::resource('personas', PersonaController::class)->middleware('auth');
+Route::resource('personas', PersonaController::class);
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('dashboard');

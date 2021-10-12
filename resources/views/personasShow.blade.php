@@ -8,7 +8,7 @@
 </head>
 <body>
     <h1>Información de {{ $persona->nombre }}</h1>
-    <a href="{{route('index')}}">Listado de personas</a>
+    <a href="{{route('personas.index')}}">Listado de personas</a>
     <ul>
         <li>{{ $persona->apellido_paterno }} {{ $persona->apellido_materno }}</li>
         <li>{{ $persona->identificador }}</li>
@@ -18,9 +18,9 @@
     <hr>
     Usuario creador: {{ $persona->user->name }}
     <hr>
-    <a href="{{route('edit', $persona->id)}}">Editar</a>
+    <a href="{{route('personas.edit', $persona->id)}}">Editar</a>
     <hr>
-    <form action="{{ route('destroy', $persona) }}" method="post">
+    <form action="{{ route('personas.destroy', $persona) }}" method="post">
         @method('DELETE')
         @csrf
         <input type="submit" value="Eliminar">
